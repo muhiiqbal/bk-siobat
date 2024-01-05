@@ -18,40 +18,38 @@
                             <th valign="middle">No. Antrian</th>
                             <th valign="middle">Keluhan</th>
                             <th valign="middle">Hari</th>
-                            <th valign="middle">Waktu</th>
-                            <th valign="middle" style="width: 0.5%;" colspan="2">Aksi</th>
+                            <th valign="middle">Tanggal Diperiksa</th>
+                            <th valign="middle">Catatan</th>
+                            <th valign="middle">Biaya Periksa</th>
+                            <th valign="middle">Nama Obat</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                            $id_dokter = $_SESSION['id'];
-                            $result = mysqli_query($mysqli, "
-                                SELECT daftar_poli.*, pasien.nama AS nama, jadwal_periksa.hari, jadwal_periksa.jam_mulai, jadwal_periksa.jam_selesai
-                                FROM daftar_poli 
-                                JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-                                JOIN pasien ON daftar_poli.id_pasien = pasien.id
-                                WHERE jadwal_periksa.id_dokter = '$id_dokter'
-                            ");
-                            $no = 1;
-                            while ($data = mysqli_fetch_array($result)) :
-                            ?>
+                    <?php
+                        $id_dokter = $_SESSION['id'];
+                        $result = mysqli_query($mysqli, "
+                        SELECT daftar_poli.*, pasien.nama AS nama, jadwal_periksa.hari, periksa.tgl_periksa, periksa.catatan, periksa.biaya_periksa, obat.nama_obat AS nama_obat
+                        FROM daftar_poli
+                        JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
+                        JOIN pasien ON daftar_poli.id_pasien = pasien.id
+                        LEFT JOIN periksa ON daftar_poli.id = periksa.id_daftar_poli
+                        LEFT JOIN detail_periksa ON periksa.id = detail_periksa.id_periksa
+                        LEFT JOIN obat ON detail_periksa.id_obat = obat.id
+                        WHERE jadwal_periksa.id_dokter = '$id_dokter' AND periksa.id_daftar_poli IS NOT NULL
+                        ");
+                        $no = 1;
+                        while ($data = mysqli_fetch_array($result)) :
+                    ?>
                                 <tr>
                                     <td><?php echo $no++ ?></td>
                                     <td><?php echo $data['nama'] ?></td>
                                     <td><?php echo $data['no_antrian'] ?></td>
                                     <td><?php echo $data['keluhan'] ?></td>
                                     <td><?php echo $data['hari'] ?></td>
-                                    <td><?php echo $data['jam_mulai'] . " - " . $data['jam_selesai'] ?></td>
-                                    <td>
-                                        <a class="btn btn-sm btn-warning text-white" href="index.php?page=dokter&id=<?php echo $data['id'] ?>">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="index.php?page=dokter&id=<?php echo $data['id'] ?>&aksi=hapus" class="btn btn-sm btn-danger text-white">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </td>
+                                    <td><?php echo $data['tgl_periksa'] ?></td>
+                                    <td><?php echo $data['catatan'] ?></td>
+                                    <td><?php echo $data['biaya_periksa'] ?></td>
+                                    <td><?php echo $data['nama_obat'] ?></td>
                                 </tr>
                         <?php endwhile; ?>
                     </tbody>
