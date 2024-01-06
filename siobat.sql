@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Des 2023 pada 08.23
+-- Waktu pembuatan: 05 Jan 2024 pada 16.27
 -- Versi server: 8.0.30
 -- Versi PHP: 8.1.6
 
@@ -32,26 +32,9 @@ CREATE TABLE `daftar_poli` (
   `id_pasien` int UNSIGNED NOT NULL,
   `id_jadwal` int UNSIGNED NOT NULL,
   `keluhan` text NOT NULL,
-  `no_antrian` int UNSIGNED NOT NULL
+  `no_antrian` int UNSIGNED NOT NULL,
+  `tanggal` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `daftar_poli`
---
-
-INSERT INTO `daftar_poli` (`id`, `id_pasien`, `id_jadwal`, `keluhan`, `no_antrian`) VALUES
-(1, 19, 1, 'habis ditakedown undertaker, sakit sekali dok punggungku', 1),
-(3, 13, 2, 'Waduh, lupa sakitnya apa dok', 1),
-(5, 19, 1, 'mampet bang', 2),
-(6, 19, 1, 'Mencret', 3),
-(7, 19, 2, 'Mencret diare', 2),
-(8, 19, 1, 'Mual dok', 4),
-(9, 19, 2, 'Muntah muntah', 3),
-(10, 16, 1, 'Hola Hola hola', 5),
-(11, 16, 2, 'hola hola hola', 4),
-(12, 17, 1, 'please dok', 6),
-(13, 16, 1, 'bisa gak dok', 7),
-(14, 13, 2, 'Too High to be true', 5);
 
 -- --------------------------------------------------------
 
@@ -86,9 +69,9 @@ CREATE TABLE `dokter` (
 --
 
 INSERT INTO `dokter` (`id`, `nama`, `alamat`, `no_hp`, `id_poli`, `nip`, `password`) VALUES
-(1, 'dr. Bram', 'jalan ga tau', '083424212321', 1, 903218321, '$2y$10$C4HWoWE.zdZ81obprGJryudnU/CUHL4qRc0i8mzxnnjsK8lUkMWxC'),
-(2, 'dr. Heartman', 'Heartman\'s Lab', '08639284892', 2, 903218117, '$2y$10$G3zY0g/y8e09K.N8ZLttke8KxeM2kHsnKuOS0Lpuzcgm/uDLyKCYa'),
-(3, 'dr. Ngeslepet Sulfat', 'jalan Ngeslepet Sulfat', '087927482648', 2, 903218116, '$2y$10$gxqy8XF3feZm1roMV14e6eqeAnUNuYL9vNLPOCqHTN7q.o1mma6tq');
+(1, 'dr. Bram', 'jalan ga tau', '083424212321', 1, 903218321, '$2y$10$R1Cx/1p6VWxeT.uW6/GLpO6ydqEri079O3vAMCBzS0NUzq00bnQ4.'),
+(2, 'dr. Heartman', 'Heartman\'s Lab', '08639284892', 2, 903218117, '$2y$10$gguvWIkx7qoNCgCmtLDj8upxPVRZGaD3yTjgEpSHDr.G8i7nb8nGO'),
+(3, 'dr. Sulfat', 'jalan Ngeslepet Sulfat', '087927482648', 2, 903218116, '$2y$10$JzoGTNmaKlymZ4Ycqmgq5evwp51FlXTYXBx..itZpKSoZzdaS9Gxa');
 
 -- --------------------------------------------------------
 
@@ -110,7 +93,9 @@ CREATE TABLE `jadwal_periksa` (
 
 INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_selesai`) VALUES
 (1, 1, 'Senin', '13:00:00', '15:00:00'),
-(2, 2, 'Selasa', '10:00:00', '12:00:00');
+(2, 2, 'Selasa', '10:00:00', '12:00:00'),
+(3, 3, 'Kamis', '20:16:00', '23:19:00'),
+(4, 2, 'Kamis', '10:50:00', '00:50:00');
 
 -- --------------------------------------------------------
 
@@ -130,7 +115,9 @@ CREATE TABLE `obat` (
 --
 
 INSERT INTO `obat` (`id`, `nama_obat`, `kemasan`, `harga`) VALUES
-(1, 'sulfat', 'plastik', 12345);
+(1, 'sulfats', 'plastic', 27000),
+(2, 'folat', 'gelas', 32000),
+(3, 'asam', 'kaplet', 33000);
 
 -- --------------------------------------------------------
 
@@ -152,12 +139,9 @@ CREATE TABLE `pasien` (
 --
 
 INSERT INTO `pasien` (`id`, `nama`, `alamat`, `no_ktp`, `no_hp`, `no_rm`) VALUES
-(13, 'DieHard', 'Perumahan Kandri', '$2y$10$LbfOP5M2AA2bMPSiJJ1k4uvFrLTUFZ2KVFxwYJozfv1nlMlsayvWa', '087737941843', '2023-12-24-1'),
-(14, 'sklfdsfsda', 'fsdfdsa', '$2y$10$Y5OsSIkxxztqQasnL.0kc.GacWWRfvjJ2XjlVqtEImg1MVGNpTex2', '09321783217', '2023-12-24-2'),
-(15, 'Jackfds', 'oewqfoidsoafdsaofjsaod', '$2y$10$a63pgDPENKzY2nbplyDQEe517lBpEY42bH2o8XcK1rWEWdhokyjXK', '081342131231', '2023-12-24-3'),
-(16, 'Hola', 'los amigos', '$2y$10$72fx6GsoaMw57HwefNdCjuB.8AFuK7lvmNe..2oHhlt7Fm3OStxqW', '086321321345', '2023-12-24-4'),
-(17, 'Johnatan', 'jalan jalan jalan', '$2y$10$kIdVv/C5r8G9oR1L4RU1VuVzrVX.1CT2bpzX6OSyy0jIV0IoeSCIO', '086328283232', '2023-12-24-5'),
-(19, 'takeDown', 'Jl.takeDown', '$2y$10$qlGwAyKmSVRXwealLHu3bOruUfGBDvI0Fi627dRss/ipbOg8INm5.', '0873216732176', '2023-12-26-6');
+(1, 'Blahaj', 'jl. boyke734', '$2y$10$FKl1GSqTQZBstnCNEQYzieX5rmGfa/Z4LbIZm1vzR7wPjIuTwrumy', '083479826732', '2024-01-05-1'),
+(2, 'Blohoj', 'Lautan Blahaj', '$2y$10$U1H6LgzwtY.flL22.l0uPOLLYdsOjB3WR6RAjjLIqfOwluqtB4Ns6', '08326718321', '2024-01-05-2'),
+(3, 'Blehej', 'jl. boyke736', '$2y$10$yAKMShvXk5gubp/LENyEKuJDNb6zy78i0shnyetN9U/qHBmO23suC', '083479826732', '2024-01-05-3');
 
 -- --------------------------------------------------------
 
@@ -168,7 +152,7 @@ INSERT INTO `pasien` (`id`, `nama`, `alamat`, `no_ktp`, `no_hp`, `no_rm`) VALUES
 CREATE TABLE `periksa` (
   `id` int UNSIGNED NOT NULL,
   `id_daftar_poli` int UNSIGNED NOT NULL,
-  `id_periksa` datetime NOT NULL,
+  `tgl_periksa` datetime NOT NULL,
   `catatan` text NOT NULL,
   `biaya_periksa` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -191,7 +175,9 @@ CREATE TABLE `poli` (
 
 INSERT INTO `poli` (`id`, `nama_poli`, `keterangan`) VALUES
 (1, 'poli gigi', 'sakit gigi berlubang'),
-(2, 'poli jantung', 'sakit serangan jantung');
+(2, 'poli jantung', 'sakit serangan jantung'),
+(4, 'poliandri', 'ok:)'),
+(5, 'polimandi', 'halo king');
 
 -- --------------------------------------------------------
 
@@ -264,7 +250,7 @@ ALTER TABLE `pasien`
 --
 ALTER TABLE `periksa`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_daftar_poli` (`id_daftar_poli`);
+  ADD KEY `periksa_ibfk_1` (`id_daftar_poli`);
 
 --
 -- Indeks untuk tabel `poli`
@@ -286,13 +272,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `daftar_poli`
 --
 ALTER TABLE `daftar_poli`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_periksa`
 --
 ALTER TABLE `detail_periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `dokter`
@@ -304,31 +290,31 @@ ALTER TABLE `dokter`
 -- AUTO_INCREMENT untuk tabel `jadwal_periksa`
 --
 ALTER TABLE `jadwal_periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `pasien`
 --
 ALTER TABLE `pasien`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `periksa`
 --
 ALTER TABLE `periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT untuk tabel `poli`
 --
 ALTER TABLE `poli`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
@@ -370,7 +356,7 @@ ALTER TABLE `jadwal_periksa`
 -- Ketidakleluasaan untuk tabel `periksa`
 --
 ALTER TABLE `periksa`
-  ADD CONSTRAINT `periksa_ibfk_1` FOREIGN KEY (`id_daftar_poli`) REFERENCES `daftar_poli` (`id`);
+  ADD CONSTRAINT `periksa_ibfk_1` FOREIGN KEY (`id_daftar_poli`) REFERENCES `daftar_poli` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

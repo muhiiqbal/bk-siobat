@@ -5,7 +5,7 @@
 ?>
 
 <main id="periksapasien-page">
-    <div class="container" style="margin-top: 1.5rem;">
+    <div class="container" style="margin-top: 5.5rem;">
         <div class="row">
             <h2 class="ps-0">Riwayat Periksa Pasien</h2>
 
