@@ -36,6 +36,9 @@ include_once("koneksi.php");
                             <a class="nav-link active" aria-current="page" href="berandaDokter.php">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="berandaDokter.php?page=setJadwalDokter">Atur Jadwal</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="berandaDokter.php?page=periksa">Periksa</a>
                         </li>
                         <li class="nav-item">
